@@ -61,7 +61,7 @@ namespace Visilabs.Log.Replace
                     using (StreamWriter writer = new StreamWriter(modify + file.Name))
                     {
                         Console.WriteLine("Process has started...");
-                        for (int i = 1; i < lines.Length - 1; i++)
+                        for (int i = 0; i < lines.Length; i++)
                         {
                             if (lines[i].Contains("OM.tid"))
                             {
