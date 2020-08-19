@@ -22,6 +22,8 @@ namespace Visilabs.Log.Replace
 
             RecurseFileStructure recurseFileStructure = new RecurseFileStructure();
             recurseFileStructure.TraverseDirectory(startDir);
+
+            Console.ReadLine();
         }
 
         public class RecurseFileStructure
