@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using StreamWriter = System.IO.StreamWriter;
 
@@ -67,11 +68,14 @@ namespace Visilabs.Log.Replace
                             {
                                 var percentage = (i * 100) / lines.Count();
                                 Console.WriteLine(i + "th line was corrupted at %" + percentage + " and recovered.");
-                                int pFrom = lines[i].IndexOf("&OM.pv.2") + "&OM.pv.2".Length;
-                                int pTo = lines[i].LastIndexOf("&");
-                                string substr = lines[i].Substring(pFrom, pTo - pFrom);
-                                lines[i] = lines[i].Replace("&OM.pv.2", "");
-                                lines[i] = lines[i].Replace(substr, "");
+                                //string input = "&OM.pv.2=myname@11.com&";
+                                Regex rx = new Regex(@"&OM.pv.2=(.*?)&");
+                                var output = rx.Match(lines[i]).Groups[1].Value;
+                                //int pFrom = lines[i].IndexOf("&OM.pv.2") + "&OM.pv.2".Length;
+                                //int pTo = lines[i].LastIndexOf("&");
+                                //string substr = lines[i].Substring(pFrom, pTo - pFrom);
+                                lines[i] = lines[i].Replace("&OM.pv.2=", "");
+                                lines[i] = lines[i].Replace(output, "");
                             }
                             writer.WriteLine(lines[i]);
                         }
