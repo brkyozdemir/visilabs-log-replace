@@ -63,11 +63,15 @@ namespace Visilabs.Log.Replace
                         Console.WriteLine("Process has started...");
                         for (int i = 0; i < lines.Length; i++)
                         {
-                            if (lines[i].Contains("OM.tid"))
+                            if (lines[i].Contains("OM.pv.2"))
                             {
                                 var percentage = (i * 100) / lines.Count();
                                 Console.WriteLine(i + "th line was corrupted at %" + percentage + " and recovered.");
-                                lines[i] = lines[i].Replace("OM.pb", "OM.pp");
+                                int pFrom = lines[i].IndexOf("&OM.pv.2") + "&OM.pv.2".Length;
+                                int pTo = lines[i].LastIndexOf("&");
+                                string substr = lines[i].Substring(pFrom, pTo - pFrom);
+                                lines[i] = lines[i].Replace("&OM.pv.2", "");
+                                lines[i] = lines[i].Replace(substr, "");
                             }
                             writer.WriteLine(lines[i]);
                         }
